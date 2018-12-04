@@ -87,90 +87,33 @@ def trade(context, data):
 
 
 
-
 def long_position_ready(context, history, current):
-    highest = history.max()['high']
-    highs = history['high']
-    ret = False
-    price = current['close']
-    pre_price = history['close'][-2]
-    if highs[context.time_span] == highest:
-        context.highest = highest
-    if pre_price < context.highest and price > context.highest:
-        ret = True
-        log.info(highest)
-        print(highs)
-        log.info(price)
     return ret
 
 def buy_long(context, data):
-    cl = data.current(context.crude_oil, 'contract')
-    # Distribute weights evenly between our contracts.
-    weights = {cl:1.0}
-    # Place orders for contracts according to weights.
-    order_optimal_portfolio(objective=opt.TargetWeights(weights),
-                           constraints=[])
-    context.currentyly_long = True
+    return
 
 def long_position_fail(context, history, current):
     ret = False
-    if context.long_count > 5:
-        thd = history[-context.long_count:-(context.long_count-5)].min()['low']
-    else:
-        thd = history[-context.long_count:].min()['low']
-    if current['close'] < thd or context.long_count > 30:
-        ret = True
     return ret
 
 def sell_long(context, data):
-    sell_off(context, data)
-    context.currentyly_long = False
-    context.long_count = 0
+    return
 
 def short_position_ready(context, history, current):
-    lowest = history.min()['low']
-    lows = history['low']
     ret = False
-    price = current['close']
-    pre_price = history['close'][-2]
-    if lows[context.time_span] == lowest:
-        context.lowest = lowest
-    if pre_price > context.lowest and price < context.lowest:
-        ret = True
-        log.info(lowest)
-        print(lows)
-        log.info(price)
     return ret
 
 def buy_short(context, data):
-    cl = data.current(context.crude_oil, 'contract')
-    # Distribute weights evenly between our contracts.
-    weights = {cl:-1.0}
-    # Place orders for contracts according to weights.
-    order_optimal_portfolio(objective=opt.TargetWeights(weights),
-                           constraints=[])
-    context.currentyly_short = True
+    return
 
 def short_position_fail(context, history, current):
     ret = False
-    if context.short_count > 5:
-        thd = history[-context.short_count:-(context.short_count-5)].max()['high']
-    else:
-        thd = history[-context.short_count:].max()['high']
-    if current['close'] > thd or context.short_count > 30:
-        ret = True
     return ret
 
 def sell_short(context, data):
-    sell_off(context, data)
-    context.short_count = 0
-    context.currentyly_short = False
+    return
 
 def sell_off(context, data):
-    cl = data.current(context.crude_oil, 'contract')
-    # Distribute weights evenly between our contracts.
-    weights = {cl:0.0}
-    # Place orders for contracts according to weights.
-    order_optimal_portfolio(objective=opt.TargetWeights(weights),
-                           constraints=[])
+    return
 
